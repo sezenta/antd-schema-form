@@ -1,0 +1,46 @@
+{
+  "name": "@sezenta/antd-schema-form",
+  "version": "1.0.0",
+  "description": "Schema form",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/esm/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf lib/",
+    "copy-files": "copyfiles -u 1 src/**/*.css lib/esm/ && copyfiles -u 1 src/**/*.css lib/cjs/",
+    "build": "yarn clean && yarn build:esm && yarn build:cjs && yarn copy-files && yarn prepare-local",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module commonjs --outDir lib/cjs",
+    "prepare-local": "rimraf ../local-link/ && copyfiles -u 1 lib/**/* ../local-link/lib/ && copyfiles package.json ../local-link"
+  },
+  "dependencies": {
+    "antd": "^4.5.1"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.28.1",
+    "@typescript-eslint/parser": "^4.28.1",
+    "@types/react": "^17.0.13",
+    "@types/react-dom": "^17.0.8",
+    "copyfiles": "^2.4.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "rimraf": "^3.0.2",
+    "eslint": "^7.29.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "prettier": "^2.3.2",
+    "typescript": "^4.3.5"
+  },
+  "files": [
+    "/lib"
+  ]
+}
