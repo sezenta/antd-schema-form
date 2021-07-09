@@ -3,7 +3,6 @@ import logo from './logo.svg';
 import './App.css';
 import { Button } from 'antd';
 import SchemaForm, { Form, useForm } from '@sezenta/antd-schema-form';
-import '@sezenta/antd-schema-form/lib/esm/css/style.css';
 
 function App() {
   const [form] = useForm();
