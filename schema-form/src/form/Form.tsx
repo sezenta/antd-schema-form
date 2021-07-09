@@ -2,7 +2,7 @@ import React, { FC, useCallback, useContext, useMemo, useState } from 'react';
 import { Button, Col, Form as AntdForm, Row } from 'antd';
 import { ColProps } from 'antd/lib/col';
 import { CloseCircleFilled, PlusOutlined } from '@ant-design/icons';
-import './SchemaFormStyle.css';
+import '../css/style.css';
 import { FormInstance, FormProps } from 'antd/lib/form';
 import { SchemaFormConfigContext } from './SchemaFormConfig';
 export interface FormColumn {
@@ -320,7 +320,7 @@ export const SchemaFormItems: FC<FormFieldsProps> = (props) => {
       props.validationAdapters.forEach((value) => (ads[value.name] = value));
     }
     return ads;
-  }, [props.validationAdapters]);
+  }, [configCtx.validators, props.validationAdapters]);
   const [sch, typ] = useMemo(() => {
     const sx = Array.isArray(schema) ? schema : [schema];
     const ty = sx.length > 0 && sx[0].hasOwnProperty('fields') ? 'columns' : 'fields';
@@ -363,15 +363,18 @@ export const SchemaFormItems: FC<FormFieldsProps> = (props) => {
 
 export const Form: FC<FormProps> = (props) => {
   const [value, setValue] = useState<any>();
-  const onValuesChange = useCallback((changed: any, all: any) => {
-    setValue(all);
-    props.onValuesChange?.(changed, all);
-  }, []);
+  const onValuesChange = useCallback(
+    (changed: any, all: any) => {
+      setValue(all);
+      props.onValuesChange?.(changed, all);
+    },
+    [props],
+  );
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     <FormXContext.Provider value={{ value, form: props.form! }}>
-      <AntdForm {...props} onValuesChange={onValuesChange}>
+      <AntdForm className="antd-schema-form" {...props} onValuesChange={onValuesChange}>
         {props.children}
       </AntdForm>
     </FormXContext.Provider>

@@ -17,6 +17,9 @@ import { FormInstance } from 'antd/es/form';
 import { TypeAdapter, ValidationAdapter } from './Form';
 import moment from 'moment';
 import { HiddenInput, LabelInput } from './CommonInputs';
+import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
+import '../css/style.css';
 
 type BooleanInputProps = { value?: boolean; onChange?: (value?: boolean) => void };
 // tslint:disable-next-line:variable-name
@@ -136,81 +139,90 @@ export default class CommonAdapters {
     slider: Slider,
     time: TimePicker,
     tree: TreeSelect,
+    phone: MapProps(PhoneInput, {
+      encode: (value: string) => (value === '' ? undefined : value),
+      decode: (value) => value ?? '',
+      className: '',
+    }),
   };
 
-  static all(_: boolean): any[] {
-    return [
-      {
-        name: 'switch',
-        // eslint-disable-next-line react/display-name
-        render: (field: any) => {
-          return <Switch {...field.props} />;
-        },
+  static allValidators: ValidationAdapter[] = [
+    {
+      name: 'equals',
+      message: 'Should be equals',
+      validator: async (rule: any, value: any, form: FormInstance) => {
+        if (form.getFieldValue(rule.to) !== value) {
+          throw Error('Not equal');
+        }
       },
-    ];
-  }
-
-  static allValidators(): ValidationAdapter[] {
-    return [
-      {
-        name: 'equals',
-        message: 'Should be equals',
-        validator: async (rule: any, value: any, form: FormInstance) => {
-          if (form.getFieldValue(rule.to) !== value) {
-            throw Error('Not equal');
-          }
-        },
+    },
+    {
+      name: 'phone',
+      message: 'Should be valid phone number',
+      validator: async (_: any, value: any) => {
+        console.log('XXXXX', value);
+        if (value === undefined || value === '') {
+          console.log('XXXXXY', value);
+          return;
+        }
+        if (!value || isValidPhoneNumber(value)) {
+          console.log('XXXXXZ', value);
+          return;
+        } else {
+          console.log('XXXXXE', value);
+          throw Error('Invalid phone number');
+        }
       },
-      {
-        name: 'nic',
-        message: 'Should be a valid NIC',
-        validator: async (_: any, value: any) => {
-          if (value === undefined || value === '') {
-            return;
-          }
-          const pattern = /^([0-9]{9}[x|X|v|V]|[0-9]{12})$/m;
-          if (!value.match(pattern)) {
-            throw Error('Not a NIC');
-          }
-          try {
-            const datePart = value.substr(value.length === 10 ? 2 : 4, 3);
-            let date = parseInt(datePart);
-            if (date > 500) {
-              date = date - 500;
-            }
-            if (date <= 0 || date > 366) {
-              throw Error('Not a NIC');
-            }
-          } catch (e) {
-            throw Error('Not a NIC');
-          }
-        },
+    },
+    // {
+    //   name: 'nic',
+    //   message: 'Should be a valid NIC',
+    //   validator: async (_: any, value: any) => {
+    //     if (value === undefined || value === '') {
+    //       return;
+    //     }
+    //     const pattern = /^([0-9]{9}[x|X|v|V]|[0-9]{12})$/m;
+    //     if (!value.match(pattern)) {
+    //       throw Error('Not a NIC');
+    //     }
+    //     try {
+    //       const datePart = value.substr(value.length === 10 ? 2 : 4, 3);
+    //       let date = parseInt(datePart);
+    //       if (date > 500) {
+    //         date = date - 500;
+    //       }
+    //       if (date <= 0 || date > 366) {
+    //         throw Error('Not a NIC');
+    //       }
+    //     } catch (e) {
+    //       throw Error('Not a NIC');
+    //     }
+    //   },
+    // },
+    {
+      name: 'email',
+      message: 'Should be valid E-mail',
+      validator: async (_: any, value: any) => {
+        if (value === undefined || value === '') {
+          return;
+        }
+        const pattern = /^[\w-.]+@([\w-]+\.)+[\w-]{2,8}$/g;
+        if (!value.match(pattern)) {
+          throw Error('Not a Valid E-mail');
+        }
       },
-      {
-        name: 'email',
-        message: 'Should be valid E-mail',
-        validator: async (_: any, value: any) => {
-          if (value === undefined || value === '') {
-            return;
-          }
-          const pattern = /^[\w-.]+@([\w-]+\.)+[\w-]{2,8}$/g;
-          if (!value.match(pattern)) {
-            throw Error('Not a Valid E-mail');
-          }
-        },
+    },
+    {
+      name: 'plusNumber',
+      message: 'Should be Positive value',
+      validator: async (_: any, value: number) => {
+        if (value === undefined || value === 0) {
+          return;
+        }
+        if (+value < 0) {
+          throw Error('Not a Positive Value');
+        }
       },
-      {
-        name: 'plusNumber',
-        message: 'Should be Positive value',
-        validator: async (_: any, value: number) => {
-          if (value === undefined || value === 0) {
-            return;
-          }
-          if (+value < 0) {
-            throw Error('Not a Positive Value');
-          }
-        },
-      },
-    ];
-  }
+    },
+  ];
 }

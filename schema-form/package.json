@@ -8,28 +8,29 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf lib/",
-    "copy-files": "copyfiles -u 1 src/**/*.css lib/esm/ && copyfiles -u 1 src/**/*.css lib/cjs/",
+    "copy-files": "copyfiles -u 1 src/**/*.css lib/esm/ && copyfiles -u 1 src/**/*.css lib/cjs/ && copyfiles -u 1 src/**/*.less lib/esm/ && copyfiles -u 1 src/**/*.less lib/cjs/",
     "build": "yarn clean && yarn build:esm && yarn build:cjs && yarn copy-files && yarn prepare-local",
     "build:esm": "tsc",
     "build:cjs": "tsc --module commonjs --outDir lib/cjs",
-    "prepare-local": "rimraf ../local-link/ && copyfiles -u 1 lib/**/* ../local-link/lib/ && copyfiles package.json ../local-link"
+    "prepare-local": "rimraf ../local-link/ && copyfiles -u 1 lib/**/* ../local-link/lib/ && copyfiles package.json ../local-link",
+    "lint": "tsc --noEmit && eslint src/**/*.{js,ts,tsx} --max-warnings 0 --fix",
+    "lint-ci": "tsc --noEmit && eslint src/**/*.{js,ts,tsx} --max-warnings 0 --no-error-on-unmatched-pattern"
   },
   "dependencies": {
-    "antd": "^4.5.1"
+    "antd": "^4.5.1",
+    "react-phone-number-input": "^3.1.23"
   },
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.0",
     "react-dom": "^16.8.0 || ^17.0.0"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.28.1",
-    "@typescript-eslint/parser": "^4.28.1",
     "@types/react": "^17.0.13",
     "@types/react-dom": "^17.0.8",
+    "@types/react-phone-number-input": "^3.0.9",
+    "@typescript-eslint/eslint-plugin": "^4.28.1",
+    "@typescript-eslint/parser": "^4.28.1",
     "copyfiles": "^2.4.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "rimraf": "^3.0.2",
     "eslint": "^7.29.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
@@ -38,6 +39,9 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "prettier": "^2.3.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "rimraf": "^3.0.2",
     "typescript": "^4.3.5"
   },
   "files": [

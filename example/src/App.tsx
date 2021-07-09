@@ -2,31 +2,43 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { Button } from 'antd';
-import SchemaForm, { Form } from '@sezenta/schema-form';
+import SchemaForm, { Form, useForm } from '@sezenta/antd-schema-form';
+import '@sezenta/antd-schema-form/lib/esm/css/style.css';
 
 function App() {
+  const [form] = useForm();
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
 
-        <Button type={'primary'}>GRRRRRRRRR</Button>
+        <Button type={'primary'} onClick={form.submit}>
+          GRRRRRRRRR
+        </Button>
         <Form
-          initialValues={{ age: true }}
+          form={form}
+          style={{ width: 300, margin: 'auto', border: '1px solid blue' }}
+          layout={'vertical'}
           onValuesChange={(changedValues: any, values: any) => console.log(values)}>
           <SchemaForm.Items
             schema={[
               {
                 name: 'Name',
                 id: 'name',
-                type: 'slider',
+                type: 'string',
                 props: { options: ['Name', 'Age'] },
               },
               {
                 name: 'Age',
                 id: 'age',
-                type: 'switch',
-                props: { options: { one: 'One', two: 'Two' } },
+                type: 'phone',
+                props: { defaultCountry: 'LK' },
+                options: {
+                  rules: [
+                    { required: true, message: 'Phone is required' },
+                    { validator: 'phone', message: 'Invalid phone number' },
+                  ],
+                },
               },
             ]}
           />

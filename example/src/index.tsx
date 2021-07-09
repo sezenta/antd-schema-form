@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { SchemaFormConfig } from '@sezenta/schema-form';
+import { SchemaFormConfig } from '@sezenta/antd-schema-form';
 import { Input } from 'antd';
 
 ReactDOM.render(

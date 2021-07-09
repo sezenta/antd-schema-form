@@ -9,7 +9,7 @@ type SchemaFormConfigData = {
 
 export const SchemaFormConfigContext = React.createContext<SchemaFormConfigData>({
   adapters: CommonAdapters.typeAdapters,
-  validators: CommonAdapters.allValidators(),
+  validators: CommonAdapters.allValidators,
 });
 
 export type SchemaFormConfigProviderProps = {
@@ -23,7 +23,7 @@ export const SchemaFormConfigProvider: FC<SchemaFormConfigProviderProps> = (prop
   const { adapters: propsAdapters, validators: propsValidators } = props;
   const adapters = useMemo(
     () => ({ ...(propsAdapters ?? {}), ...parentAdapters }),
-    [parentValidators, propsAdapters],
+    [parentAdapters, propsAdapters],
   );
   const validators = useMemo(
     () => [...(propsValidators ?? []), ...parentValidators],

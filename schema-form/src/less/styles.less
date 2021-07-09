@@ -1,0 +1,50 @@
+@import '~antd/dist/antd.less';
+@import '~antd/lib/style/themes/default';
+
+.PhoneInput {
+  height: 32px;
+
+  .PhoneInputInput {
+    box-sizing: border-box;
+    margin: 0;
+    font-variant: tabular-nums;
+    list-style: none;
+    font-feature-settings: 'tnum', "tnum";
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    min-width: 0;
+    padding: 4px 11px 4px 51px;
+    color: @text-color;
+    font-size: @font-size-base;
+    line-height: 1.5715;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid @border-color-base;
+    border-radius: @border-radius-base;
+    transition: all 0.3s;
+    margin-left: -40px;
+  }
+
+  .PhoneInputInput:focus {
+    border-color: @primary-color;
+    border-right-width: 1px !important;
+    outline: 0;
+    box-shadow: 0 0 0 2px rgba(3, 73, 104, 0.2);
+  }
+
+  .PhoneInputCountrySelect {
+    z-index: 2;
+  }
+
+  .PhoneInputCountryIcon {
+    width: 28px;
+    height: 20px;
+    z-index: 1;
+    transform: translateX(7px);
+  }
+
+  .PhoneInputCountryIcon--border {
+    border: none;
+  }
+}
